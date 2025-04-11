@@ -62,6 +62,34 @@ public class MyLinkedList<T> implements MyList<T> {
         return current.data;
     }
 
+    @Override
+    public void add(int index, T item) {
+        if (index < 0 || index > size) return;
+
+        if (index == 0) {
+            addFirst(item);
+            return;
+        }
+
+        if (index == size) {
+            addLast(item);
+            return;
+        }
+
+        MyNode current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        MyNode newNode = new MyNode(item);
+        newNode.prev = current.prev;
+        newNode.next = current;
+        current.prev.next = newNode;
+        current.prev = newNode;
+
+        size++;
+    }
+
     public T getFirst() {
         return head != null ? head.data : null;
     }

@@ -1,8 +1,11 @@
 package org.example;
 
+import org.example.MyLinkedList;
+
 public class Main {
     public static void main(String[] args) {
-        MyList<Integer> list = new MyArrayList<>();
+        MyList<Integer> list = new MyLinkedList<Integer>();
+
 
         list.add(10);
         list.add(5);
