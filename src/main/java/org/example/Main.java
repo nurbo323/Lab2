@@ -26,5 +26,17 @@ public class Main {
             System.out.print(i + " ");
         }
         System.out.println();
+
+        MyStack<Integer> stack = new MyStack<>();
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println(stack.pop());  // 30
+        System.out.println(stack.peek()); // 20
+        System.out.println(stack.size()); // 2
+        System.out.println(stack.isEmpty()); // false
+
     }
+
 }
