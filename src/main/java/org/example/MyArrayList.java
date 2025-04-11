@@ -1,39 +1,37 @@
 package org.example;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 public class MyArrayList<T> implements MyList<T> {
     private Object[] data;
     private int size;
-    private static final int INITIAL_CAPACITY = 10;
 
     public MyArrayList() {
-        data = new Object[INITIAL_CAPACITY];
+        data = new Object[5];
         size = 0;
     }
 
-    private void resize() {
-        Object[] newData = new Object[data.length * 2];
-        for (int i = 0; i < size; i++) {
-            newData[i] = data[i];
-        }
-        data = newData;
-    }
-
-    @Override
     public void add(T item) {
         if (size == data.length) {
-            resize();
+            increaseCapacity();
         }
         data[size++] = item;
     }
 
-    @Override
-    public void add(int index, T item) {
-        if (index < 0 || index > size) throw new IndexOutOfBoundsException();
-        if (size == data.length) resize();
+    public void addFirst(T item) {
+        add(0, item);
+    }
 
+    public void addLast(T item) {
+        add(item);
+    }
+
+    public void add(int index, T item) {
+        if (index < 0 || index > size) {
+            System.out.println("Index out of bounds");
+            return;
+        }
+        if (size == data.length) {
+            increaseCapacity();
+        }
         for (int i = size; i > index; i--) {
             data[i] = data[i - 1];
         }
@@ -41,92 +39,70 @@ public class MyArrayList<T> implements MyList<T> {
         size++;
     }
 
-    @Override
-    public void addFirst(T item) {
-        add(0, item);
-    }
-
-    @Override
-    public void addLast(T item) {
-        add(item);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
     public T get(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        if (index < 0 || index >= size) {
+            System.out.println("Index out of bounds");
+            return null;
+        }
         return (T) data[index];
     }
 
-    @Override
     public T getFirst() {
         return get(0);
     }
 
-    @Override
     public T getLast() {
         return get(size - 1);
     }
 
-    @Override
     public void set(int index, T item) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        if (index < 0 || index >= size) return;
         data[index] = item;
     }
 
-    @Override
     public void remove(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        if (index < 0 || index >= size) return;
         for (int i = index; i < size - 1; i++) {
             data[i] = data[i + 1];
         }
-        data[size - 1] = null;
         size--;
     }
 
-    @Override
     public void removeFirst() {
         remove(0);
     }
 
-    @Override
     public void removeLast() {
         remove(size - 1);
     }
 
-    @Override
     public void clear() {
-        data = new Object[INITIAL_CAPACITY];
+        data = new Object[5];
         size = 0;
     }
 
-    @Override
     public int size() {
         return size;
     }
 
-    @Override
-    public boolean exists(Object object) {
-        return indexOf(object) != -1;
+    public boolean exists(Object o) {
+        return indexOf(o) != -1;
     }
 
-    @Override
-    public int indexOf(Object object) {
+    public int indexOf(Object o) {
         for (int i = 0; i < size; i++) {
-            if (data[i].equals(object)) return i;
+            if (data[i].equals(o)) return i;
         }
         return -1;
     }
 
-    @Override
-    public int lastIndexOf(Object object) {
+    public int lastIndexOf(Object o) {
         for (int i = size - 1; i >= 0; i--) {
-            if (data[i].equals(object)) return i;
+            if (data[i].equals(o)) return i;
         }
         return -1;
     }
 
-    @Override
     public Object[] toArray() {
         Object[] result = new Object[size];
         for (int i = 0; i < size; i++) {
@@ -135,38 +111,37 @@ public class MyArrayList<T> implements MyList<T> {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
     public void sort() {
         for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - 1 - i; j++) {
-                Comparable<T> a = (Comparable<T>) data[j];
-                T b = (T) data[j + 1];
-                if (a.compareTo(b) > 0) {
+            for (int j = 0; j < size - i - 1; j++) {
+                Comparable a = (Comparable) data[j];
+                if (a.compareTo(data[j + 1]) > 0) {
                     Object temp = data[j];
                     data[j] = data[j + 1];
                     data[j + 1] = temp;
                 }
             }
         }
+        System.out.println("Sorted successfully");
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private int cursor = 0;
-
-            @Override
+    public java.util.Iterator<T> iterator() {
+        return new java.util.Iterator<T>() {
+            int pos = 0;
             public boolean hasNext() {
-                return cursor < size;
+                return pos < size;
             }
-
-            @SuppressWarnings("unchecked")
-            @Override
             public T next() {
-                if (!hasNext()) throw new NoSuchElementException();
-                return (T) data[cursor++];
+                return (T) data[pos++];
             }
         };
+    }
+
+    private void increaseCapacity() {
+        Object[] newData = new Object[data.length * 2];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 }
