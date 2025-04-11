@@ -5,22 +5,23 @@ public class Main {
         MyList<Integer> list = new MyArrayList<>();
 
         list.add(10);
-        list.add(20);
+        list.add(5);
         list.add(30);
-        list.addFirst(5);
+        list.addFirst(3);
         list.addLast(40);
 
-        System.out.println("First: " + list.getFirst());   // 5
-        System.out.println("Last: " + list.getLast());     // 40
-        System.out.println("Size: " + list.size());        // 5
+        System.out.println("First: " + list.getFirst());  // 3
+        System.out.println("Last: " + list.getLast());    // 40
+        System.out.println("Size: " + list.size());       // 5
 
-        list.removeFirst();
-        System.out.println("After removeFirst, first: " + list.getFirst()); // 10
+        list.removeFirst();  // удалит 3
+        System.out.println("After removeFirst: " + list.getFirst()); // 10
 
-        list.sort();
-        System.out.println("After sort:");
+        list.sort(); // отсортирует
+        System.out.println("Sorted list:");
         for (int i : list) {
             System.out.print(i + " ");
         }
+        System.out.println();
     }
 }
